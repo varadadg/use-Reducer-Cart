@@ -1,103 +1,27 @@
 import React from "react";
-import { useState, useRef } from "react";
-import styles from "./style.module.scss";
+import { useReducer } from "react";
+import { Product } from "../assets/Products";
+import cartReducer from "../cartReducer";
+import Card from "./Card";
+import MyCart from "../MyCart";
+
 const Home = () => {
-  const [product, setProduct] = useState({
-    title: "",
-    desc: "",
-    price: 0,
-    category: "",
-    tags: [],
-    images: {
-      sm: "",
-      md: "",
-      lg: "",
-    },
-    quantity: 0,
-  });
-
-  const handleChange = (e) => {
-    setProduct((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-
-  const tagRef = useRef();
-
-  const handleTags = () => {
-    const tags = tagRef.current.value.split(",");
-    tags.forEach((tag) => {
-      setProduct((prev) => ({ ...prev, tags: [...prev.tags, tag] }));
-    });
-  };
-
-  const handleRemoveTag = (tag) => {
-    setProduct((prev) => ({
-      ...prev,
-      tags: prev.tags.filter((t) => t !== tag),
-    }));
-  };
-
-  const handleIncrease = () => {
-    setProduct((prev) => ({ ...prev, quantity: prev.quantity + 1 }));
-  };
-
-  const handleDecrease = () => {
-    setProduct((prev) => ({
-      ...prev,
-      quantity: prev.quantity - 1,
-    }));
-  };
-
+  const [cart, dispatch] = useReducer(cartReducer, { items: [] });
   return (
-    <div>
-      <form>
-        <input
-          type="text"
-          name="title"
-          onChange={handleChange}
-          placeholder="Title"
-        />
-        <input
-          type="text"
-          name="desc"
-          onChange={handleChange}
-          placeholder="Desc"
-        />
-        <input
-          type="number"
-          name="price"
-          onChange={handleChange}
-          placeholder="Price"
-        />
-        <p>Category:</p>
-        <select name="category" id="category" onChange={handleChange}>
-          <option value="sneakers">Sneakers</option>
-          <option value="tshirts">T-shirts</option>
-          <option value="jeans">Jeans</option>
-        </select>
-        <p>Tags:</p>
-        <textarea
-          ref={tagRef}
-          placeholder="Seperate tags with commas..."></textarea>
-        <button type="button" onClick={handleTags}>
-          Add Tags
-        </button>
-        <div className="tags">
-          {product.tags.map((tag) => (
-            <small key={tag} onClick={() => handleRemoveTag(tag)}>
-              {tag}
-            </small>
-          ))}
-        </div>
-        <div className="quantity">
-          <button type="button" onClick={handleDecrease}>
-            -
-          </button>
-          <span>Quantity ({product.quantity})</span>
-          <button type="button" onClick={handleIncrease}>
-            +
-          </button>
-        </div>
-      </form>
+    <div className="grid grid-cols-4 gap-4 ...">
+      {Product.map((item) => {
+        return (
+          <div>
+            <Card
+              itemName={item.name}
+              {...item}
+              dispatch={dispatch}
+              cart={cart}
+            />
+          </div>
+        );
+      })}
+      <MyCart cart={cart} />
     </div>
   );
 };
