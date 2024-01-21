@@ -6,6 +6,7 @@ const cartReducer = (state, action) => {
       return { ...state, items: [...state.items, action.payload.item] };
 
     case "REMOVE ITEM":
+    // return {...state, items:}
   }
   return <div>cartReducer</div>;
 };
