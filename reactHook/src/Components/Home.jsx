@@ -10,10 +10,9 @@ const Home = () => {
 
   const removeItem = (id) => {
     // Use filter to create a new array without the item with the specified ID
-    const updatedCart = cart.items.filter((item) => item.id !== id);
 
-    // Log the updated array
-    console.log(updatedCart);
+    dispatch({ type: "REMOVE ITEM", payload: id });
+    console.log(cart.items, "cart items");
   };
 
   return (

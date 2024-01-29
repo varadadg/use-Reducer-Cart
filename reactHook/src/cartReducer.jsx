@@ -6,7 +6,10 @@ const cartReducer = (state, action) => {
       return { ...state, items: [...state.items, action.payload.item] };
 
     case "REMOVE ITEM":
-    // return {...state, items:}
+      return {
+        ...state,
+        items: state.items.filter((item) => item.id !== action.payload),
+      };
   }
   return <div>cartReducer</div>;
 };
